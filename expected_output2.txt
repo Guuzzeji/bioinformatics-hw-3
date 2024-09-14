@@ -1,0 +1,3 @@
+Merge ['A'] and ['B'] to form ['A', 'B']
+Merge ['A', 'B'] and ['C'] to form ['A', 'B', 'C']
+Merge ['A', 'B', 'C'] and ['D'] to form ['A', 'B', 'C', 'D']
