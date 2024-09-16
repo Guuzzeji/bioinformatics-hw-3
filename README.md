@@ -3,13 +3,17 @@ Homework 3 for bioinformatics class.
 
 ## Note
 
-Using Python 3.10.7
+Using Python 3.12.6
 
 ## Setup
 
+**Setup venv and download required packages**
+
 `python3 -m venv venv`
 
-`pip install -r requirements.txt`
+`source ./venv/bin/activate`
+
+`pip3 install -r requirements.txt`
 
 ## Run
 
