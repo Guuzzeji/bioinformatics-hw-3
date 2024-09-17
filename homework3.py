@@ -152,10 +152,10 @@ print("UPGMA Tree Construction:")
 # upgma_from_scipy(distance_matrix.copy(), species)
 
 # Load the distance matrix 2
-file_path = 'input2.txt'  # Replace with your actual file path
-distance_matrix = load_distance_matrix(file_path)
+# file_path = 'input2.txt'  # Replace with your actual file path
+# distance_matrix = load_distance_matrix(file_path)
 
-# Specify the species names
-species = ['A', 'B', 'C', 'D'] # Example species for your input
-# upgma(distance_matrix.copy(), species)
-upgma_from_scipy(distance_matrix.copy(), species)
+# # Specify the species names
+# species = ['A', 'B', 'C', 'D'] # Example species for your input
+# # upgma(distance_matrix.copy(), species)
+# upgma_from_scipy(distance_matrix.copy(), species)
