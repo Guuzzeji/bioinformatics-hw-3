@@ -1,9 +1,21 @@
-# Function to load the distance matrix from a file
+"""
+File Name: homework3.py
+Created: Gabe
+"""
+
+import numpy
+from scipy.cluster.hierarchy import dendrogram, linkage
+from matplotlib import pyplot as plt
+
 def load_distance_matrix(file_path: str) -> dict[tuple[str, str], int]:
-    with open(file_path, 'r') as file:
+    """
+    Function to load the distance matrix from a file
+    """
+
+    with open(file_path, encoding="utf-8") as file:
         lines = file.readlines()
         matrix = {}
-        offset = 0 # allow offset to not have extra data
+        offset = 0  # allow offset to not have extra data
 
         for i, line in enumerate(lines):
             row = list(map(float, line.split()))
@@ -14,43 +26,53 @@ def load_distance_matrix(file_path: str) -> dict[tuple[str, str], int]:
             offset += 1
         return matrix
 
+
 def print_species_history(history: list[list[str]]):
+    """
+    Print out the species history in "Merge A and B to form AB"
+    """
+
     for group in history:
-        group_1 = sorted([c for c in group[0]]) # NOTE: have to sort in order to pass test cases
+        # NOTE: have to sort in order to pass test cases
+        group_1 = sorted([c for c in group[0]])
         group_2 = sorted([c for c in group[1]])
+
+        combine_groups = sorted(group_2 + group_1)
 
         # Print in correct format alphabetically
         if group_1[0] > group_2[0]:
-            print(f"Merge {group_2} and {group_1} to form {sorted(group_2 + group_1)}")
+            print(f"Merge {group_2} and {group_1} to form {combine_groups}")
         else:
-            print(f"Merge {group_1} and {group_2} to form {sorted(group_1 + group_2)}")
+            print(f"Merge {group_1} and {group_2} to form {combine_groups}")
 
 
-def upgma(distance_matrix: dict[tuple[int,int], int], species: [str]):
+def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
     """
-    Implement this function that will load the distance_matrix and species, and return the tree (aka print)
+    Implement this function that will load the distance_matrix and species, 
+    and return the tree (aka print)
 
     Note
         - species index is equal to distance index for both row and col
     """
 
     species_dict = {i: species[i] for i in range(len(species))}
-    history = [] # store each step of merges
+    history = []  # store each step of merges
     num_species = len(species)
 
     while len(species_dict) > 1:
-        min_distance_species = sorted(distance_matrix.items(), key=lambda item: item[1])[0]
+        min_distance_species = sorted(
+            distance_matrix.items(), key=lambda item: item[1])[0]
 
         # Get the species from min distance calc
-        i = min_distance_species[0][0] # col
-        j = min_distance_species[0][1] # row
+        i = min_distance_species[0][0]  # col
+        j = min_distance_species[0][1]  # row
 
         new_node = species_dict[i] + species_dict[j]
         history.append([species_dict[i], species_dict[j]])
 
+        # Remove from list and add back as combine specie group
         del species_dict[i]
         del species_dict[j]
-
         species_dict[num_species] = new_node
 
         # Calculate new distances to the merged cluster
@@ -60,10 +82,12 @@ def upgma(distance_matrix: dict[tuple[int,int], int], species: [str]):
                 dist_ik = distance_matrix.get((min(i, k), max(i, k)), 0)
                 dist_jk = distance_matrix.get((min(j, k), max(j, k)), 0)
                 new_dist = (dist_ik + dist_jk) / 2
-                distance_matrix[(min(num_species, k), max(num_species, k))] = new_dist
+                distance_matrix[(min(num_species, k),
+                                 max(num_species, k))] = new_dist
 
         # Remove distances involving the old clusters i and j
-        distance_matrix = {k: v for k, v in distance_matrix.items() if i not in k and j not in k}
+        distance_matrix = {
+            k: v for k, v in distance_matrix.items() if i not in k and j not in k}
 
         # Increase the cluster index (for the next new cluster)
         num_species += 1
@@ -71,28 +95,67 @@ def upgma(distance_matrix: dict[tuple[int,int], int], species: [str]):
     print_species_history(history)
 
 
-# Use this: 
+# Use this:
 # - https://stackoverflow.com/questions/66969893/scipy-and-the-hierarchical-clustering-input
 # - https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+
+def convert_matrix_2d(distance_matrix: dict[tuple[int, int], int], len_matrix: int) -> list[list[int]]:
+    """
+    Convert dict matrix of distances into simple 2d array
+    """
+    distance_2d = numpy.zeros((len_matrix, len_matrix))
+
+    for _, j in enumerate(distance_matrix):
+        dis = distance_matrix[j]
+        col = j[0]
+        row = j[1]
+        distance_2d[col][row] = dis
+
+    return distance_2d
+
+def upgma_from_scipy(distance_matrix: dict[tuple[int, int], int], species: list[str]):
+    """
+    Use scipy upgma algorthim to show connection of species
+    """
+    dis_2d_matrix = convert_matrix_2d(distance_matrix, len(species))
+    species_tree = linkage(dis_2d_matrix)
+
+    # Plot and show
+    plt.figure(figsize=(25, 10))
+    dendrogram(species_tree, labels=species)
+    plt.xlabel("Species")
+
+    plt.show()
+
 
 
 
 # Running UPGMA
 print("UPGMA Tree Construction:")
 # Load the distance matrix
-file_path = 'input3.txt'  # Replace with your actual file path
+# file_path = 'input3.txt'  # Replace with your actual file path
+# distance_matrix = load_distance_matrix(file_path)
+
+# # Specify the species names
+# species = ['A', 'B', 'C', 'D', 'E']  # Example species for your input
+# upgma(distance_matrix.copy(), species)
+# upgma_from_scipy(distance_matrix.copy(), species)
+
+
+# Load the distance matrix 1
+# file_path = 'input1.txt'  # Replace with your actual file path
+# distance_matrix = load_distance_matrix(file_path)
+
+# # Specify the species names
+# species = ['A', 'B', 'C']  # Example species for your input
+# # upgma(distance_matrix.copy(), species)
+# upgma_from_scipy(distance_matrix.copy(), species)
+
+# Load the distance matrix 2
+file_path = 'input2.txt'  # Replace with your actual file path
 distance_matrix = load_distance_matrix(file_path)
 
 # Specify the species names
-species = ['A', 'B', 'C', 'D', 'E']  # Example species for your input
-upgma(distance_matrix.copy(), species)
-
-
-# Load the distance matrix
-#file_path = 'input10.txt'  # Replace with your actual file path
-#distance_matrix = load_distance_matrix(file_path)
-
-# Specify the species names
-#species = ['A', 'B', 'C', 'D','E']  # Example species for your input
-#upgma(distance_matrix.copy(), species)
-
+species = ['A', 'B', 'C', 'D'] # Example species for your input
+# upgma(distance_matrix.copy(), species)
+upgma_from_scipy(distance_matrix.copy(), species)
