@@ -17,7 +17,7 @@ To run this project in Google Cloud, follow these steps:
 
 ```bash
 sudo apt-get update
-sudo apt-get install python3.12
+sudo apt-get install python3.12 python3.12-venv python3.12-distutils
 sudo apt-get install git
 ```
 
@@ -36,7 +36,7 @@ git clone https://github.com/Guuzzeji/bioinformatics-hw-3
 1. Create a Python virtual environment to isolate your project dependencies:
 
 ```bash
-python3 -m venv venv
+python3.12 -m venv venv
 ```
 
 2. Activate the virtual environment:
@@ -48,7 +48,7 @@ source ./venv/bin/activate
 3. Install the necessary Python packages from the `requirements.txt` file:
 
 ```bash
-pip3 install -r requirements.txt
+python3.12 pip install -r requirements.txt
 ```
 
 > **Tip:** Ensure the `requirements.txt` file is in the project’s root directory. This file should contain all the dependencies needed for the project.
