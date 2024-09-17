@@ -1,20 +1,22 @@
 import os
 from homework3 import *
 
+
 def test_upgma_function(input_file, expected_output_file, species):
     # Load the distance matrix from the input file
     distance_matrix = load_distance_matrix(input_file)
-    
+
     # Capture the actual UPGMA output
     actual_output = []
+
     def capture_print(s):
         actual_output.append(s)
 
     # Override the print function to capture output instead of printing it
-    import builtins
+    import builtins # WHY?
     original_print = builtins.print
     builtins.print = capture_print
-    
+
     try:
         # Run UPGMA algorithm
         upgma(distance_matrix, species)
@@ -36,8 +38,9 @@ def test_upgma_function(input_file, expected_output_file, species):
         print("Actual output:")
         print(actual_output)
 
+
 # Example test cases
 test_upgma_function('input1.txt', 'expected_output1.txt', ['A', 'B', 'C'])
 test_upgma_function('input2.txt', 'expected_output2.txt', ['A', 'B', 'C', 'D'])
-test_upgma_function('input3.txt', 'expected_output3.txt', ['A', 'B', 'C', 'D', 'E'])
-
+test_upgma_function('input3.txt', 'expected_output3.txt',
+                    ['A', 'B', 'C', 'D', 'E'])
