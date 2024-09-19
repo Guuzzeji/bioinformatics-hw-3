@@ -95,7 +95,7 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
         # Increase the cluster index (for the next new cluster)
         num_species += 1
 
-    # print_species_history(history)
+    print_species_history(history)
     # print("List of species -> ", history)
 
 
