@@ -13,7 +13,7 @@ To run this project in Google Cloud, follow these steps:
 
 2. After the VM is created, update the Ubuntu package manager and install the necessary software, including Git and Python 3.12.6. Run the following commands:
 
-**NOTE:** May have to follow the steps here to get Python 3.12 to install correctly on ubuntu. [Link to website]("https://cloudbytes.dev/snippets/upgrade-python-to-latest-version-on-ubuntu-linux)
+> **Note:** May have to follow the steps here to get Python 3.12 to install correctly on ubuntu. [Link to website](https://cloudbytes.dev/snippets/upgrade-python-to-latest-version-on-ubuntu-linux)
 
 ```bash
 sudo apt-get update
