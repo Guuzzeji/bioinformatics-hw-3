@@ -95,7 +95,8 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
         # Increase the cluster index (for the next new cluster)
         num_species += 1
 
-    print_species_history(history)
+    # print_species_history(history)
+    # print("List of species -> ", history)
 
 
 # Use this for lib upgma:
@@ -123,6 +124,8 @@ def upgma_from_scipy(distance_matrix: dict[tuple[int, int], int], species: list[
     """
     dis_2d_matrix = convert_matrix_2d(distance_matrix, len(species))
     species_tree = linkage(dis_2d_matrix)
+
+    # print("From upgma_from_scipy - >\n", species_tree)
 
     # Plot and show
     plt.figure(figsize=(25, 10))
