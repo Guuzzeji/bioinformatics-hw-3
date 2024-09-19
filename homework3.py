@@ -1,6 +1,9 @@
 """
 File Name: homework3.py
 Created: Gabe
+
+Main file where upgma is done through custom upgma algorthim and 
+the one used byscipy.
 """
 
 import numpy
@@ -95,11 +98,12 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
     print_species_history(history)
 
 
-# Use this:
+# Use this for lib upgma:
 # - https://stackoverflow.com/questions/66969893/scipy-and-the-hierarchical-clustering-input
 # - https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
 
-def convert_matrix_2d(distance_matrix: dict[tuple[int, int], int], len_matrix: int) -> list[list[int]]:
+def convert_matrix_2d(distance_matrix: dict[tuple[int, int], int],
+                      len_matrix: int) -> list[list[int]]:
     """
     Convert dict matrix of distances into simple 2d array
     """
@@ -128,10 +132,8 @@ def upgma_from_scipy(distance_matrix: dict[tuple[int, int], int], species: list[
     plt.show()
 
 
-
-
-# Running UPGMA
-print("UPGMA Tree Construction:")
+# ! Running UPGMA
+# print("UPGMA Tree Construction:")
 # Load the distance matrix
 # file_path = 'input3.txt'  # Replace with your actual file path
 # distance_matrix = load_distance_matrix(file_path)
