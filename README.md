@@ -48,7 +48,7 @@ source ./venv/bin/activate
 3. Install the necessary Python packages from the `requirements.txt` file:
 
 ```bash
-python3.12 pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 > **Tip:** Ensure the `requirements.txt` file is in the project’s root directory. This file should contain all the dependencies needed for the project.
@@ -58,13 +58,13 @@ python3.12 pip install -r requirements.txt
 To run the Python scripts, use one of the following commands:
 
 ```bash
-python3 homework3.py
+python3.12 homework3.py
 ```
 
 or
 
 ```bash
-python3 final_test.py
+python3.12 final_test.py
 ```
 
 > **Note:** You may want to comment out the bottom part of `homework3.py` if you are using different input files (e.g., `input.txt`) for testing purposes. This allows you to experiment with multiple input scenarios without running all parts of the script at once.
