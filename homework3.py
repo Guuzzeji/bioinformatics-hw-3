@@ -13,6 +13,13 @@ from matplotlib import pyplot as plt
 def load_distance_matrix(file_path: str) -> dict[tuple[str, str], int]:
     """
     Function to load the distance matrix from a file
+
+    Args:
+        file_path (str): Path to the file to load distance matrix
+
+    Returns:
+        dict[tuple[str, str], int] A dict of our distances for each 
+        species we are dealing with. [(col, row) -> distance]
     """
 
     with open(file_path, encoding="utf-8") as file:
@@ -25,14 +32,16 @@ def load_distance_matrix(file_path: str) -> dict[tuple[str, str], int]:
             for j in range(offset, len(row)):
                 if i != j:
                     matrix[(i, j)] = row[j]
-
             offset += 1
         return matrix
-
 
 def print_species_history(history: list[list[str]]):
     """
     Print out the species history in "Merge A and B to form AB"
+
+    Args:
+        - history: list[list[str]]: A list of species and how each 
+            one was connected to each other
     """
 
     for group in history:
@@ -54,14 +63,22 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
     Implement this function that will load the distance_matrix and species, 
     and return the tree (aka print)
 
-    Note
+    Note:
         - species index is equal to distance index for both row and col
+
+    Args:
+        distance_matrix (dict[tuple[int, int], int]): A dict of our distances 
+            for each species we are dealing with. [(col, row) -> distance]
+
+        species (list[str]): A list of species, should line up base on index
+            i.e [A,B,C] => [A = 0, B = 1, C = 2] 
     """
 
     species_dict = {i: species[i] for i in range(len(species))}
     history = []  # store each step of merges
     num_species = len(species)
 
+    # Loop over ever specie created
     while len(species_dict) > 1:
         min_distance_species = sorted(
             distance_matrix.items(), key=lambda item: item[1])[0]
@@ -70,6 +87,7 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
         i = min_distance_species[0][0]  # col
         j = min_distance_species[0][1]  # row
 
+        # Create new species group
         new_node = species_dict[i] + species_dict[j]
         history.append([species_dict[i], species_dict[j]])
 
@@ -95,18 +113,31 @@ def upgma(distance_matrix: dict[tuple[int, int], int], species: list[str]):
         # Increase the cluster index (for the next new cluster)
         num_species += 1
 
+    # Output
     print_species_history(history)
     # print("List of species -> ", history)
 
 
+################################################################
+# Lib implementation
 # Use this for lib upgma:
 # - https://stackoverflow.com/questions/66969893/scipy-and-the-hierarchical-clustering-input
 # - https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+################################################################
 
 def convert_matrix_2d(distance_matrix: dict[tuple[int, int], int],
                       len_matrix: int) -> list[list[int]]:
     """
     Convert dict matrix of distances into simple 2d array
+    
+    Args:
+        distance_matrix (dict[tuple[int, int], int]): A dict of our distances 
+            for each species we are dealing with. [(col, row) -> distance]
+
+        len_matrix (int): The number of rows * columns in the matrix
+
+    Returns:
+        list[list[int]]: A 2D array (distance matrix)
     """
     distance_2d = numpy.zeros((len_matrix, len_matrix))
 
@@ -121,6 +152,13 @@ def convert_matrix_2d(distance_matrix: dict[tuple[int, int], int],
 def upgma_from_scipy(distance_matrix: dict[tuple[int, int], int], species: list[str]):
     """
     Use scipy upgma algorthim to show connection of species
+
+    Args:
+        distance_matrix (dict[tuple[int, int], int]): A dict of our distances 
+            for each species we are dealing with. [(col, row) -> distance]
+
+        species (list[str]): A list of species, should line up base on index
+            i.e [A,B,C] => [A = 0, B = 1, C = 2] 
     """
     dis_2d_matrix = convert_matrix_2d(distance_matrix, len(species))
     species_tree = linkage(dis_2d_matrix)
